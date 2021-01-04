@@ -6,7 +6,6 @@ import decimal
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
@@ -74,7 +73,6 @@ class StripeAccountFromCustomerMixin(object):
     stripe_account_stripe_id.fget.short_description = "Stripe Account"
 
 
-@python_2_unicode_compatible
 class Plan(UniquePerAccountStripeObject):
     amount = models.DecimalField(decimal_places=2, max_digits=9)
     currency = models.CharField(max_length=15, blank=False)
@@ -108,7 +106,6 @@ class Plan(UniquePerAccountStripeObject):
         )
 
 
-@python_2_unicode_compatible
 class Coupon(StripeObject):
 
     amount_off = models.DecimalField(decimal_places=2, max_digits=9, null=True, blank=True)
@@ -132,7 +129,6 @@ class Coupon(StripeObject):
         return "Coupon for {}, {}".format(description, self.duration)
 
 
-@python_2_unicode_compatible
 class EventProcessingException(models.Model):
 
     event = models.ForeignKey("Event", null=True, blank=True, on_delete=models.CASCADE)
@@ -145,7 +141,6 @@ class EventProcessingException(models.Model):
         return "<{}, pk={}, Event={}>".format(self.message, self.pk, self.event)
 
 
-@python_2_unicode_compatible
 class Event(AccountRelatedStripeObject):
 
     kind = models.CharField(max_length=250)
@@ -256,7 +251,6 @@ class UserAccount(models.Model):
         return "UserAccount(pk={self.pk!r}, user={self.user!r}, account={self.account!r}, customer={self.customer!r})".format(self=self)
 
 
-@python_2_unicode_compatible
 class Customer(AccountRelatedStripeObject):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
@@ -541,7 +535,6 @@ class Charge(StripeAccountFromCustomerMixin, StripeObject):
         return Card.objects.filter(stripe_id=self.source).first()
 
 
-@python_2_unicode_compatible
 class Account(StripeObject):
 
     INTERVAL_CHOICES = (
