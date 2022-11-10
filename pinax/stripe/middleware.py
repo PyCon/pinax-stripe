@@ -9,13 +9,9 @@ try:
 except ImportError:
     from django.core.urlresolvers import resolve
 
-try:
-    from django.utils.deprecation import MiddlewareMixin as MixinorObject
-except ImportError:
-    MixinorObject = object
 
 
-class ActiveSubscriptionMiddleware(MixinorObject):
+class ActiveSubscriptionMiddleware:
 
     def process_request(self, request):
         is_authenticated = request.user.is_authenticated

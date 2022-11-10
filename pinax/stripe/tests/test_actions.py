@@ -837,7 +837,8 @@ class SourcesTests(TestCase):
     def test_delete_card_dj19(self):
         CustomerMock = Mock()
         result = sources.delete_card(CustomerMock, source="card_token")
-        self.assertEqual(result, (0, {"pinax_stripe.Card": 0}))
+        print(result)
+        self.assertEqual(result, (0, {}))
         self.assertTrue(CustomerMock.stripe_customer.sources.retrieve().delete.called)
 
     @skipIf(django.VERSION >= (1, 9), "Only for django before 1.9")
